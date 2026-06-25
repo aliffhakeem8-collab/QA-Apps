@@ -1,0 +1,559 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Conforma — Food QA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Serif:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FBFAF7; --panel:#FFFFFF; --ink:#16201C; --muted:#6B7570;
+    --line:#E7E5DD; --line-strong:#D8D5CB;
+    --teal:#0E6E5C; --teal-deep:#0A584A; --teal-soft:#E7F1ED;
+    --pass:#2E7D52; --pass-soft:#E8F3EC;
+    --warn:#B9750F; --warn-soft:#FBF0DE;
+    --fail:#B23A2E; --fail-soft:#FBE9E6;
+    --pend:#5B5BD6; --pend-soft:#ECECFB;
+    --gold:#9A7B16; --gold-soft:#F6EFD8;
+    --shadow:0 1px 2px rgba(22,32,28,.04),0 8px 24px rgba(22,32,28,.06);
+    --radius:14px;
+  }
+  *{box-sizing:border-box} html,body{margin:0}
+  body{background:var(--paper);color:var(--ink);font-family:"IBM Plex Sans",system-ui,sans-serif;font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
+  .mono{font-family:"IBM Plex Mono",ui-monospace,monospace}
+  .hidden{display:none!important}
+
+  /* ============ AUTH ============ */
+  .auth-wrap{min-height:100vh;display:grid;grid-template-columns:1.05fr .95fr}
+  @media(max-width:860px){.auth-wrap{grid-template-columns:1fr}}
+  .auth-left{padding:54px 60px;display:flex;flex-direction:column;justify-content:center;gap:26px}
+  @media(max-width:860px){.auth-left{padding:40px 28px}}
+  .auth-brand{display:flex;align-items:center;gap:12px;font-weight:600;font-size:18px}
+  .glyph{width:34px;height:34px;border-radius:9px;background:var(--teal);position:relative;flex:none}
+  .glyph::before{content:"";position:absolute;inset:9px 10px;border-left:2.6px solid #fff;border-bottom:2.6px solid #fff;transform:rotate(-45deg) translate(1px,-2px);width:9px;height:14px}
+  .auth-hero h1{font-family:"IBM Plex Serif",serif;font-weight:600;font-size:34px;line-height:1.15;margin:0 0 12px;letter-spacing:-.015em}
+  .auth-hero p{margin:0;color:var(--muted);max-width:46ch;font-size:16px}
+  .plans{display:flex;gap:12px;flex-wrap:wrap;margin-top:6px}
+  .plan{flex:1;min-width:150px;border:1px solid var(--line-strong);border-radius:12px;padding:16px;background:var(--panel)}
+  .plan.feat{border-color:var(--teal);box-shadow:0 0 0 1px var(--teal)}
+  .plan .nm{font-weight:600;font-size:13px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+  .plan .pr{font-family:"IBM Plex Serif",serif;font-size:24px;font-weight:600;margin:6px 0 2px}
+  .plan .pr small{font-size:13px;color:var(--muted);font-weight:400;font-family:"IBM Plex Sans"}
+  .plan ul{margin:10px 0 0;padding:0;list-style:none;font-size:12.5px;color:var(--muted)}
+  .plan li{padding:3px 0 3px 18px;position:relative}
+  .plan li::before{content:"";position:absolute;left:0;top:9px;width:9px;height:5px;border-left:2px solid var(--teal);border-bottom:2px solid var(--teal);transform:rotate(-45deg)}
+  .auth-right{background:var(--panel);border-left:1px solid var(--line);display:flex;align-items:center;justify-content:center;padding:40px}
+  @media(max-width:860px){.auth-right{border-left:0;border-top:1px solid var(--line)}}
+  .auth-card{width:100%;max-width:360px}
+  .tabs{display:flex;gap:4px;background:#F1EFE9;padding:4px;border-radius:11px;margin-bottom:22px}
+  .tabs button{flex:1;border:0;background:transparent;padding:9px;border-radius:8px;font:inherit;font-weight:600;font-size:13.5px;color:var(--muted);cursor:pointer}
+  .tabs button.on{background:var(--panel);color:var(--ink);box-shadow:var(--shadow)}
+  .field{margin-bottom:14px}
+  .field label{display:block;font-size:12px;font-weight:600;letter-spacing:.03em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+  .field input,.field select{width:100%;border:1px solid var(--line-strong);border-radius:10px;padding:11px 12px;font:inherit;font-size:14px;background:#FCFCFA}
+  .field input:focus-visible,.field select:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
+  .auth-btn{width:100%;border:0;border-radius:11px;background:var(--teal);color:#fff;font:inherit;font-weight:600;font-size:15px;padding:12px;cursor:pointer;margin-top:4px}
+  .auth-btn:hover{background:var(--teal-deep)}
+  .demo-row{display:flex;gap:8px;margin-top:16px}
+  .demo-row button{flex:1;border:1px solid var(--line-strong);background:var(--panel);border-radius:9px;padding:9px;font:inherit;font-size:12.5px;font-weight:500;cursor:pointer;color:var(--ink)}
+  .demo-row button:hover{border-color:var(--teal);background:var(--teal-soft)}
+  .auth-note{font-size:11.5px;color:var(--muted);margin-top:18px;text-align:center;line-height:1.5}
+
+  /* ============ APP HEADER + NAV ============ */
+  header.top{border-bottom:1px solid var(--line);background:rgba(251,250,247,.9);backdrop-filter:saturate(140%) blur(6px);position:sticky;top:0;z-index:30}
+  .top-inner{max-width:1180px;margin:0 auto;padding:11px 22px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+  .hamburger{width:40px;height:40px;border-radius:50%;border:0;background:#23302B;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;flex:none;transition:background .15s}
+  .hamburger:hover{background:#16201C}
+  .hamburger svg{width:18px;height:18px;stroke:#fff;stroke-width:2.2}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:600;letter-spacing:-.01em}
+  .brand .glyph{width:28px;height:28px}.brand .glyph::before{inset:7px 8px;width:8px;height:12px;border-width:2.4px}
+  .brand small{display:block;font-weight:400;font-size:11px;color:var(--muted);margin-top:-3px}
+  .top-spacer{flex:1}
+  .badge{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:600;border-radius:20px;padding:4px 11px}
+  .badge.plan{background:var(--gold-soft);color:var(--gold)}
+  .badge.role-admin{background:var(--pend-soft);color:var(--pend)}
+  .badge.role-subscriber{background:var(--teal-soft);color:var(--teal-deep)}
+  .usermenu{display:flex;align-items:center;gap:10px;border:1px solid var(--line-strong);border-radius:11px;padding:5px 6px 5px 12px;background:var(--panel)}
+  .usermenu .nm{font-size:13px;font-weight:600}.usermenu .em{font-size:11px;color:var(--muted)}
+  .signout{border:0;background:#F1EFE9;border-radius:8px;padding:7px 11px;font:inherit;font-size:12.5px;font-weight:600;cursor:pointer}
+  .signout:hover{background:#E7E4DC}
+
+  /* drawer */
+  .overlay{position:fixed;inset:0;background:rgba(22,32,28,.4);opacity:0;visibility:hidden;transition:.2s;z-index:40}
+  .overlay.show{opacity:1;visibility:visible}
+  .drawer{position:fixed;top:0;left:0;bottom:0;width:284px;max-width:84vw;background:var(--panel);border-right:1px solid var(--line);transform:translateX(-100%);transition:transform .22s cubic-bezier(.4,0,.2,1);z-index:50;display:flex;flex-direction:column}
+  .drawer.open{transform:none;box-shadow:0 0 40px rgba(22,32,28,.18)}
+  .drawer-head{padding:18px 20px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:11px;font-weight:600}
+  .drawer-head .glyph{width:30px;height:30px}.drawer-head .glyph::before{inset:8px 9px;width:8px;height:13px;border-width:2.5px}
+  .drawer-head .x{margin-left:auto;border:0;background:#F1EFE9;width:30px;height:30px;border-radius:8px;cursor:pointer;font-size:16px;color:var(--muted)}
+  .nav{padding:14px 12px;display:flex;flex-direction:column;gap:4px}
+  .nav small{padding:8px 12px 4px;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+  .nav-item{display:flex;align-items:center;gap:13px;padding:12px 14px;border:0;background:transparent;border-radius:11px;font:inherit;font-size:14.5px;font-weight:500;color:var(--ink);cursor:pointer;text-align:left;width:100%}
+  .nav-item:hover{background:#F4F3EE}
+  .nav-item.active{background:var(--teal-soft);color:var(--teal-deep);font-weight:600}
+  .nav-item .ni{width:34px;height:34px;border-radius:9px;background:#F1EFE9;display:flex;align-items:center;justify-content:center;flex:none}
+  .nav-item.active .ni{background:#fff}
+  .nav-item .ni svg{width:18px;height:18px;stroke:var(--muted);fill:none;stroke-width:1.8}
+  .nav-item.active .ni svg{stroke:var(--teal)}
+  .nav-item .sub{display:block;font-size:11.5px;font-weight:400;color:var(--muted)}
+  .nav-item.active .sub{color:var(--teal-deep);opacity:.8}
+  .drawer-foot{margin-top:auto;padding:16px 20px;border-top:1px solid var(--line);font-size:12px;color:var(--muted)}
+  .drawer-foot b{color:var(--ink)}
+
+  .wrap{max-width:1180px;margin:0 auto;padding:0 24px 64px}
+  .lede{padding:30px 0 20px}
+  .lede h1{font-family:"IBM Plex Serif",serif;font-weight:600;font-size:26px;line-height:1.2;margin:0 0 6px;letter-spacing:-.01em}
+  .lede p{margin:0;color:var(--muted);max-width:64ch}
+
+  .grid{display:grid;grid-template-columns:1.12fr .88fr;gap:22px;align-items:start}
+  @media(max-width:920px){.grid{grid-template-columns:1fr}}
+  .col{display:flex;flex-direction:column;gap:22px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}
+  .card-h{padding:15px 20px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px}
+  .card-h h2{margin:0;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600}
+  .card-h .count{margin-left:auto;font-size:12px;color:var(--muted);background:#F4F3EE;border-radius:20px;padding:2px 10px}
+  .card-b{padding:20px}
+
+  .drop{border:1.5px dashed var(--line-strong);border-radius:12px;background:#FCFCFA;padding:24px;text-align:center;cursor:pointer;transition:.15s}
+  .drop:hover,.drop.armed{border-color:var(--teal);background:var(--teal-soft)}
+  .drop .ic{width:38px;height:38px;margin:0 auto 10px;border-radius:9px;background:var(--teal-soft);display:flex;align-items:center;justify-content:center}
+  .drop.armed .ic{background:#fff}
+  .drop .ic svg{width:20px;height:20px;stroke:var(--teal);fill:none;stroke-width:1.7}
+  .drop strong{font-weight:600}.drop span{display:block;color:var(--muted);font-size:13px;margin-top:3px}
+  .filechip{margin-top:12px;display:none;align-items:center;gap:9px;justify-content:center;font-size:13px;flex-wrap:wrap}
+  .filechip.show{display:flex}
+  .filechip .mono{background:var(--teal-soft);color:var(--teal-deep);padding:3px 9px;border-radius:7px;font-size:12px}
+  .pipe{font-size:11.5px;color:var(--muted);margin-top:8px;display:none}.pipe.show{display:block}.pipe b{color:var(--teal-deep)}
+
+  .controls{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px}
+  @media(max-width:520px){.controls{grid-template-columns:1fr}}
+  label.fld .lab{font-size:12px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+  select.big{width:100%;appearance:none;background:var(--panel);border:1px solid var(--line-strong);border-radius:10px;padding:10px 36px 10px 12px;font:inherit;font-size:14px;cursor:pointer;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M2 4l4 4 4-4' stroke='%236B7570' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center}
+  .extract{margin-top:18px}
+  .extract .lab{font-size:12px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;display:flex;justify-content:space-between;align-items:center}
+  .extract .lab a{color:var(--teal);text-decoration:none;font-size:11px;text-transform:none;cursor:pointer}
+  textarea{width:100%;min-height:112px;resize:vertical;border:1px solid var(--line-strong);border-radius:10px;padding:12px;font-family:"IBM Plex Mono",monospace;font-size:12.5px;line-height:1.6;background:#FCFCFA}
+  textarea:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
+  .run{margin-top:18px;width:100%;border:0;border-radius:11px;background:var(--teal);color:#fff;font:inherit;font-weight:600;font-size:15px;padding:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px}
+  .run:hover{background:var(--teal-deep)}
+
+  .scoreline{display:flex;align-items:center;gap:16px;padding:4px 0 18px;border-bottom:1px solid var(--line);margin-bottom:6px}
+  .ring{position:relative;width:64px;height:64px;flex:none}.ring .num{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:19px}
+  .tally{display:flex;gap:18px;font-size:13px;flex-wrap:wrap}.tally div{display:flex;align-items:center;gap:7px}
+  .pill{width:9px;height:9px;border-radius:3px}.pill.p{background:var(--pass)}.pill.w{background:var(--warn)}.pill.f{background:var(--fail)}
+  ul.ledger{list-style:none;margin:0;padding:0}
+  ul.ledger li{display:flex;gap:13px;padding:15px 2px;border-bottom:1px solid var(--line)}
+  ul.ledger li:last-child{border-bottom:0}
+  .stat{width:22px;height:22px;border-radius:6px;flex:none;display:flex;align-items:center;justify-content:center;margin-top:1px}
+  .stat svg{width:13px;height:13px;stroke-width:2.4;fill:none}
+  .stat.p{background:var(--pass-soft)}.stat.p svg{stroke:var(--pass)}
+  .stat.w{background:var(--warn-soft)}.stat.w svg{stroke:var(--warn)}
+  .stat.f{background:var(--fail-soft)}.stat.f svg{stroke:var(--fail)}
+  .rule-txt{flex:1;min-width:0}.rule-txt .req{font-weight:500}.rule-txt .det{color:var(--muted);font-size:13px;margin-top:2px}
+  .ref{margin-top:7px;display:inline-flex;align-items:center;gap:6px;font-size:11.5px;background:#F4F3EE;border:1px solid var(--line);border-radius:6px;padding:3px 8px;color:#444}
+  .ref b{color:var(--teal-deep);font-weight:600}
+  .empty{padding:34px 20px;text-align:center;color:var(--muted)}
+  .empty .ic{width:46px;height:46px;border-radius:11px;background:#F4F3EE;margin:0 auto 12px;display:flex;align-items:center;justify-content:center}
+  .empty .ic svg{width:22px;height:22px;stroke:var(--muted);fill:none;stroke-width:1.6}
+
+  .rs-row{display:flex;gap:11px;align-items:flex-start;padding:13px 2px;border-bottom:1px solid var(--line)}
+  .rs-row:last-child{border-bottom:0}
+  .rs-sev{font-size:10px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;padding:3px 7px;border-radius:5px;flex:none;margin-top:2px;white-space:nowrap}
+  .rs-sev.mandatory{background:var(--fail-soft);color:var(--fail)}
+  .rs-sev.advisory{background:var(--warn-soft);color:var(--warn)}
+  .rs-sev.prohibited{background:#2A2A2A;color:#fff}
+  .rs-meta{flex:1;min-width:0}.rs-meta .t{font-weight:500;font-size:14px}.rs-meta .r{font-size:11.5px;color:var(--muted);margin-top:2px}
+
+  .pending-card{border-color:#CFCFF4}
+  .pending-card .card-h{background:var(--pend-soft);border-bottom-color:#DCDCF7;border-radius:13px 13px 0 0}
+  .pending-card .card-h h2{color:var(--pend)}
+  .pq{display:flex;gap:11px;align-items:flex-start;padding:14px 2px;border-bottom:1px solid var(--line)}
+  .pq:last-child{border-bottom:0}
+  .pq .act-tag{font-size:10px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;padding:3px 7px;border-radius:5px;background:var(--pend-soft);color:var(--pend);flex:none;margin-top:2px}
+  .pq-meta{flex:1;min-width:0}.pq-meta .t{font-weight:500}.pq-meta .r{font-size:11.5px;color:var(--muted);margin-top:3px}
+  .pq-meta .by{font-size:11.5px;color:var(--muted);margin-top:4px}.pq-meta .by b{color:var(--ink)}
+  .pq-acts{display:flex;gap:7px;margin-top:10px}
+  .pq-acts button{border:0;border-radius:8px;padding:7px 13px;font:inherit;font-weight:600;font-size:12.5px;cursor:pointer}
+  .pq-acts .approve{background:var(--pass);color:#fff}.pq-acts .reject{background:#EEECE5;color:var(--ink)}
+  .locked{font-size:11.5px;color:var(--muted);margin-top:10px;display:flex;align-items:center;gap:6px}
+  .locked svg{width:13px;height:13px;stroke:var(--muted);fill:none;stroke-width:1.8}
+
+  .addbtn{margin:16px 0 0;width:100%;border:1px dashed var(--line-strong);background:#FCFCFA;border-radius:10px;padding:11px;font:inherit;font-size:13.5px;font-weight:500;color:var(--teal-deep);cursor:pointer}
+  .addbtn:hover{border-color:var(--teal);background:var(--teal-soft)}
+  .addform{display:none;margin-top:14px;padding:16px;border:1px solid var(--line);border-radius:11px;background:#FCFCFA;gap:11px;grid-template-columns:1fr 1fr}
+  .addform.show{display:grid}.addform .full{grid-column:1/-1}
+  .addform input,.addform select{width:100%;border:1px solid var(--line-strong);border-radius:9px;padding:9px 11px;font:inherit;font-size:13.5px;background:#fff}
+  .addform .acts{grid-column:1/-1;display:flex;gap:9px;justify-content:flex-end}
+  .addform .acts button{border:0;border-radius:9px;padding:9px 16px;font:inherit;font-weight:600;font-size:13.5px;cursor:pointer}
+  .addform .save{background:var(--teal);color:#fff}.addform .cancel{background:#EEECE5;color:var(--ink)}
+
+  .log{list-style:none;margin:0;padding:0}
+  .log li{display:flex;gap:10px;padding:11px 2px;border-bottom:1px solid var(--line);font-size:12.5px}
+  .log li:last-child{border-bottom:0}
+  .log .tl-dot{width:7px;height:7px;border-radius:50%;margin-top:6px;flex:none}
+  .log .tl-dot.pub{background:var(--pass)}.log .tl-dot.prop{background:var(--pend)}.log .tl-dot.rej{background:var(--fail)}.log .tl-dot.doc{background:var(--gold)}
+  .log .tl-body b{font-weight:600}.log .tl-body .when{color:var(--muted);font-size:11.5px}.log .tl-body .ver{color:var(--teal-deep)}
+
+  /* ============ DOWNLOADS VIEW ============ */
+  .dl-up{border:1.5px dashed var(--line-strong);border-radius:13px;background:#FCFCFA;padding:26px;text-align:center;cursor:pointer;transition:.15s;margin-bottom:22px}
+  .dl-up:hover{border-color:var(--teal);background:var(--teal-soft)}
+  .dl-up .ic{width:40px;height:40px;margin:0 auto 10px;border-radius:10px;background:var(--gold-soft);display:flex;align-items:center;justify-content:center}
+  .dl-up .ic svg{width:20px;height:20px;stroke:var(--gold);fill:none;stroke-width:1.7}
+  .dl-up strong{font-weight:600}.dl-up span{display:block;color:var(--muted);font-size:13px;margin-top:3px}
+  .ro-banner{display:flex;align-items:center;gap:9px;background:#F4F3EE;border:1px solid var(--line);border-radius:11px;padding:12px 15px;font-size:13px;color:var(--muted);margin-bottom:22px}
+  .ro-banner svg{width:16px;height:16px;stroke:var(--muted);fill:none;stroke-width:1.8;flex:none}
+  .dl-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media(max-width:680px){.dl-grid{grid-template-columns:1fr}}
+  .dl-card{border:1px solid var(--line);border-radius:13px;background:var(--panel);box-shadow:var(--shadow);padding:18px;display:flex;flex-direction:column;gap:14px}
+  .dl-card .row{display:flex;gap:13px;align-items:flex-start}
+  .dl-card .dic{width:42px;height:50px;border-radius:6px;background:var(--fail-soft);flex:none;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--fail)}
+  .dl-card .meta{flex:1;min-width:0}
+  .dl-card .meta .t{font-weight:600;font-size:14.5px;word-break:break-word;line-height:1.3}
+  .dl-card .meta .m{font-size:12px;color:var(--muted);margin-top:4px}
+  .dl-card .meta .tag{display:inline-block;margin-top:8px;font-size:10.5px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;background:var(--teal-soft);color:var(--teal-deep);padding:2px 8px;border-radius:5px}
+  .dl-btn{border:0;border-radius:10px;background:var(--ink);color:#fff;font:inherit;font-weight:600;font-size:13.5px;padding:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px}
+  .dl-btn:hover{background:#0c130f}
+  .dl-btn svg{width:15px;height:15px;stroke:#fff;fill:none;stroke-width:2}
+</style>
+</head>
+<body>
+
+<!-- ===================== AUTH SCREEN ===================== -->
+<div id="authScreen">
+  <div class="auth-wrap">
+    <div class="auth-left">
+      <div class="auth-brand"><div class="glyph"></div> Conforma</div>
+      <div class="auth-hero">
+        <h1>Keep every food label and ad on the right side of the law.</h1>
+        <p>Check artwork, specs and video against Malaysian food regulations — with a ruleset that stays current as the law is amended.</p>
+      </div>
+      <div class="plans">
+        <div class="plan"><div class="nm">Free trial</div><div class="pr">RM0<small>/14 days</small></div>
+          <ul><li>50 checks</li><li>Labelling scope</li><li>Propose amendments</li></ul></div>
+        <div class="plan feat"><div class="nm">Pro</div><div class="pr">RM89<small>/mo</small></div>
+          <ul><li>Unlimited checks</li><li>All scopes + video</li><li>Document library</li></ul></div>
+      </div>
+    </div>
+    <div class="auth-right">
+      <div class="auth-card">
+        <div class="tabs"><button class="on" id="tabLogin">Log in</button><button id="tabSignup">Create account</button></div>
+        <div id="loginForm">
+          <div class="field"><label>Email</label><input id="li_email" type="email" placeholder="you@company.my" autocomplete="username"></div>
+          <div class="field"><label>Password</label><input id="li_pass" type="password" placeholder="••••••••" autocomplete="current-password"></div>
+          <button class="auth-btn" id="li_go">Log in</button>
+          <div class="demo-row"><button id="demoSub">Try as subscriber</button><button id="demoAdmin">Try as admin</button></div>
+        </div>
+        <div id="signupForm" class="hidden">
+          <div class="field"><label>Name</label><input id="su_name" placeholder="Your name"></div>
+          <div class="field"><label>Email</label><input id="su_email" type="email" placeholder="you@company.my"></div>
+          <div class="field"><label>Plan</label><select id="su_plan"><option value="Free trial">Free trial — RM0</option><option value="Pro">Pro — RM89/mo</option></select></div>
+          <button class="auth-btn" id="su_go">Start subscription</button>
+        </div>
+        <div class="auth-note">Demo only — accounts and login are simulated in the browser.<br>No real authentication or payment happens here.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== APP ===================== -->
+<div id="appScreen" class="hidden">
+  <header class="top">
+    <div class="top-inner">
+      <button class="hamburger" id="ham" aria-label="Menu"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+      <div class="brand"><div class="glyph"></div><div>Conforma<small id="brandSub">Compliance Checker</small></div></div>
+      <div class="top-spacer"></div>
+      <span class="badge plan" id="planBadge">Pro</span>
+      <span class="badge" id="roleBadge">subscriber</span>
+      <div class="usermenu"><div><div class="nm" id="userName">—</div><div class="em" id="userEmail">—</div></div><button class="signout" id="signout">Sign out</button></div>
+    </div>
+  </header>
+
+  <!-- drawer -->
+  <div class="overlay" id="overlay"></div>
+  <aside class="drawer" id="drawer">
+    <div class="drawer-head"><div class="glyph"></div> Conforma <button class="x" id="drawerX">✕</button></div>
+    <nav class="nav">
+      <small>Workspace</small>
+      <button class="nav-item active" data-view="checker">
+        <span class="ni"><svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></span>
+        <span>Compliance Checker<span class="sub">Check a file against the rules</span></span>
+      </button>
+      <button class="nav-item" data-view="docs">
+        <span class="ni"><svg viewBox="0 0 24 24"><path d="M12 3v12m0 0l-4-4m4 4l4-4"/><path d="M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2"/></svg></span>
+        <span>Downloadable Content<span class="sub">Food Acts &amp; regulations</span></span>
+      </button>
+    </nav>
+    <div class="drawer-foot">Signed in as <b id="drawerUser">—</b><br><span id="drawerRole">—</span></div>
+  </aside>
+
+  <div class="wrap">
+    <!-- ===== VIEW: CHECKER ===== -->
+    <div id="viewChecker">
+      <div class="lede"><h1 id="welcome">Your compliance workspace</h1><p id="welcomeSub">Drop a file, pick the scope, and run a check. Propose rule changes any time — an admin reviews and publishes them.</p></div>
+      <div class="grid">
+        <div class="col">
+          <div class="card"><div class="card-h"><h2>Submit for review</h2></div>
+            <div class="card-b">
+              <div class="drop" id="drop"><div class="ic"><svg viewBox="0 0 24 24"><path d="M12 16V4m0 0L7 9m5-5l5 5M5 20h14"/></svg></div>
+                <strong>Drop a file</strong><span>PDF · image · text · video</span>
+                <input type="file" id="file" hidden><div class="filechip" id="filechip"></div><div class="pipe" id="pipe"></div></div>
+              <div class="controls">
+                <label class="fld"><div class="lab">Region</div><select class="big" id="region"><option value="MY">Malaysia</option><option value="SG">Singapore</option></select></label>
+                <label class="fld"><div class="lab">Scope</div><select class="big" id="scope"><option value="labelling">Labelling</option><option value="nutrition">Nutrition claims</option><option value="advertising">Advertising / video</option></select></label>
+              </div>
+              <div class="extract"><div class="lab"><span id="extractLab">Extracted text</span><a id="sampleLink">load sample</a></div>
+                <textarea id="content" placeholder="Whatever the file contains, normalized to text, lands here."></textarea></div>
+              <button class="run" id="run"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg> Run compliance check</button>
+            </div>
+          </div>
+          <div class="card"><div class="card-h"><h2>Results</h2></div>
+            <div class="card-b" id="results"><div class="empty"><div class="ic"><svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>Run a check to score the file against the live ruleset.</div></div></div>
+        </div>
+        <div class="col">
+          <div class="card pending-card hidden" id="pendingCard"><div class="card-h"><h2>Pending approval</h2><span class="count" id="pendCount">0</span></div><div class="card-b" id="pendList"></div></div>
+          <div class="card"><div class="card-h"><h2>Live ruleset</h2><span class="count" id="liveCount">0 rules</span></div>
+            <div class="card-b">
+              <div id="rsList"></div>
+              <button class="addbtn" id="addToggle">+ Propose a rule change</button>
+              <div class="addform" id="addForm">
+                <label class="full"><input id="f_req" placeholder="Requirement, e.g. 'Allergen warning declared'"></label>
+                <input id="f_ref" placeholder="Reference, e.g. Reg 11(8)">
+                <select id="f_sev"><option value="mandatory">Mandatory</option><option value="advisory">Advisory</option><option value="prohibited">Prohibited</option></select>
+                <input class="full" id="f_kw" placeholder="Keyword(s), comma-separated">
+                <div class="acts"><button class="cancel" id="f_cancel">Cancel</button><button class="save" id="f_save">Submit for approval</button></div>
+              </div>
+            </div>
+          </div>
+          <div class="card"><div class="card-h"><h2>Change log</h2></div><div class="card-b"><ul class="log" id="logList"></ul></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== VIEW: DOWNLOADS ===== -->
+    <div id="viewDocs" class="hidden">
+      <div class="lede"><h1>Downloadable content</h1><p>Food Acts, regulations, amendments and guidelines uploaded to the workspace. Download any document for reference.</p></div>
+      <div id="docAdminUp">
+        <div class="dl-up" id="docUp"><div class="ic"><svg viewBox="0 0 24 24"><path d="M12 16V4m0 0L7 9m5-5l5 5M5 20h14"/></svg></div>
+          <strong>Upload a regulation document</strong><span>Food Act, gazette PDF, amendment, guideline — visible to all subscribers</span></div>
+        <input type="file" id="docFile" hidden>
+      </div>
+      <div class="ro-banner hidden" id="docRo"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 018 0v4"/></svg> Documents are uploaded and maintained by an admin. You can download any of them below.</div>
+      <div class="dl-grid" id="dlGrid"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ===================== DATA ===================== */
+function R(o){ return Object.assign({status:"published",proposedBy:null,action:"add"},o); }
+const RULESETS={
+  "MY|labelling":{name:"MY · Labelling",version:"v2024.1",source:"Food Regulations 1985 (P.U.(A) 437/85)",rules:[
+    R({id:"name",req:"Name / appropriate designation of the food",ref:"Reg 11(1)(a)",sev:"mandatory",test:t=>/(name|product)/i.test(t)}),
+    R({id:"origin",req:"Country of origin declared",ref:"Reg 11(1)",sev:"mandatory",test:t=>/(origin|product of|made in)/i.test(t)}),
+    R({id:"addr",req:"Name & address of manufacturer / importer",ref:"Reg 11(1)",sev:"mandatory",test:t=>/(sdn bhd|manufactured by|packed by|imported by)/i.test(t)}),
+    R({id:"net",req:"Net content in metric units (g, kg, ml, l)",ref:"Reg 11(1)",sev:"mandatory",test:t=>/\b\d+(\.\d+)?\s?(g|kg|ml|l)\b/i.test(t)}),
+    R({id:"ingr",req:"Ingredients in descending order of weight",ref:"Reg 11(1)",sev:"mandatory",test:t=>/ingredient/i.test(t)}),
+    R({id:"date",req:"Date marking — 'expiry' / 'best before'",ref:"Reg 14",sev:"mandatory",test:t=>/(expiry|use by|best before)/i.test(t)}),
+    R({id:"lang",req:"Required particulars in Bahasa Malaysia",ref:"Reg 10",sev:"mandatory",test:t=>/(berat|bahan|dihasilkan|nama|tarikh)/i.test(t)}),
+  ]},
+  "MY|nutrition":{name:"MY · Nutrition",version:"v2024.1",source:"Food Regulations 1985 · Reg 18B",rules:[
+    R({id:"nip",req:"Panel declares energy, protein, carbohydrate, total sugars",ref:"Reg 18B",sev:"mandatory",test:t=>/energy/i.test(t)&&/protein/i.test(t)&&/carbohydrate/i.test(t)&&/sugar/i.test(t)}),
+    R({id:"per",req:"Values per 100g/100ml and per serving",ref:"Reg 18B(4)",sev:"mandatory",test:t=>/per 100|per serving/i.test(t)}),
+    R({id:"comp",req:"Comparative claim backed by ≥25% difference",ref:"Reg 18A",sev:"advisory",test:t=>!/(reduced|less|lower)/i.test(t)||/25%/i.test(t)}),
+  ]},
+  "MY|advertising":{name:"MY · Advertising",version:"v2024.1",source:"Food Advertisement Regulations 2013 · Food Act s.16/17",rules:[
+    R({id:"truth",req:"Claims are accurate, balanced and substantiated",ref:"FAR 2013 Reg 3(1)",sev:"advisory",test:t=>/(clinically|study|substantiat|tested)/i.test(t)}),
+    R({id:"disease",req:"No disease prevention / treatment / cure claims",ref:"Food Reg 18(6)",sev:"prohibited",test:t=>/(cure|treat|prevent|lower (blood pressure|cholesterol)|detox|remove toxin|boost immunity|merawat)/i.test(t)}),
+    R({id:"mislead",req:"No misleading exaggeration ('miracle', '100% safe')",ref:"FAR 2013 Reg 3(2)",sev:"prohibited",test:t=>/(miracle|magic|100% safe|guaranteed cure)/i.test(t)}),
+    R({id:"ident",req:"Advertiser identity stated",ref:"Food Act s.16",sev:"mandatory",test:t=>/(sdn bhd|brought to you by|advertised by)/i.test(t)}),
+  ]},
+  "SG|labelling":{name:"SG · Labelling",version:"v2023.2",source:"Singapore Food Regulations",rules:[
+    R({id:"name",req:"Common name / description of the food",ref:"SFR r.5",sev:"mandatory",test:t=>/name/i.test(t)}),
+    R({id:"ingr",req:"Statement of ingredients",ref:"SFR r.5",sev:"mandatory",test:t=>/ingredient/i.test(t)}),
+    R({id:"net",req:"Net quantity in metric units",ref:"SFR r.5",sev:"mandatory",test:t=>/\b\d+\s?(g|kg|ml|l)\b/i.test(t)}),
+  ]},
+  "SG|nutrition":{name:"SG · Nutrition",version:"v2023.2",source:"Singapore Food Regulations",rules:[R({id:"nip",req:"Nutrition information panel present",ref:"SFR",sev:"mandatory",test:t=>/energy|protein/i.test(t)})]},
+  "SG|advertising":{name:"SG · Advertising",version:"v2023.1",source:"SG Code of Advertising Practice",rules:[R({id:"dis",req:"No prohibited health / disease claims",ref:"SCAP",sev:"prohibited",test:t=>/(cure|treat|prevent disease)/i.test(t)})]},
+};
+const SAMPLES={
+  labelling:`MEKAR Coconut Cookies / Biskut Kelapa
+Net weight / Berat bersih: 200 g
+Ingredients / Bahan: wheat flour, sugar, coconut (18%), palm oil, salt
+Manufactured by: Mekar Foods Sdn Bhd, Shah Alam, Selangor
+Best before: see base of pack — Product of Malaysia`,
+  nutrition:`Nutrition Information / Maklumat Pemakanan
+Per 100 g / Per serving (30 g)
+Energy 480 kcal · Protein 6 g · Carbohydrate 62 g · Total sugars 22 g · Fat 21 g`,
+  advertising:`[VIDEO 0:00-0:30]  On-screen: "MEKAR Slim Tea"
+Voiceover: "Clinically proven to detox your body and lower cholesterol in 7 days.
+A miracle drink that helps remove toxins fast!"   End card: Mekar Foods Sdn Bhd`,
+};
+
+/* ===================== AUTH ===================== */
+const ACCOUNTS={
+  "you@demo.my":{name:"Aisha (you)",role:"subscriber",plan:"Pro"},
+  "admin@demo.my":{name:"Site Admin",role:"admin",plan:"Owner"},
+};
+let session=null;
+const $=id=>document.getElementById(id);
+function showLoginTab(login){ $("tabLogin").classList.toggle("on",login);$("tabSignup").classList.toggle("on",!login);$("loginForm").classList.toggle("hidden",!login);$("signupForm").classList.toggle("hidden",login); }
+$("tabLogin").onclick=()=>showLoginTab(true); $("tabSignup").onclick=()=>showLoginTab(false);
+function login(email){ const acc=ACCOUNTS[email]; if(!acc){alert("No such demo account. Use the demo buttons or create an account.");return;} session={email,...acc}; enterApp(); }
+$("li_go").onclick=()=>login(($("li_email").value||"").trim().toLowerCase());
+$("demoSub").onclick=()=>login("you@demo.my");
+$("demoAdmin").onclick=()=>login("admin@demo.my");
+$("su_go").onclick=()=>{ const email=($("su_email").value||"").trim().toLowerCase();const name=$("su_name").value.trim()||"New user";const plan=$("su_plan").value;if(!email){$("su_email").focus();return;} ACCOUNTS[email]={name,role:"subscriber",plan}; login(email); };
+$("signout").onclick=()=>{ session=null;$("appScreen").classList.add("hidden");$("authScreen").classList.remove("hidden"); };
+
+function enterApp(){
+  $("authScreen").classList.add("hidden"); $("appScreen").classList.remove("hidden");
+  const admin=session.role==="admin";
+  $("userName").textContent=session.name; $("userEmail").textContent=session.email; $("planBadge").textContent=session.plan;
+  const rb=$("roleBadge"); rb.textContent=session.role; rb.className="badge role-"+session.role;
+  $("drawerUser").textContent=session.name; $("drawerRole").textContent=session.role==="admin"?"Administrator":"Subscriber · "+session.plan;
+  $("welcome").textContent=admin?"Admin workspace":"Your compliance workspace";
+  $("welcomeSub").textContent=admin?"Review proposed rule changes and publish approved ones. Manage the document library under Downloadable Content.":"Drop a file, pick the scope, and run a check. Propose rule changes any time — an admin reviews and publishes them.";
+  $("docAdminUp").classList.toggle("hidden",!admin);
+  $("docRo").classList.toggle("hidden",admin);
+  switchView("checker"); syncRuleset(); renderDocs(); renderLog();
+}
+
+/* ===================== NAV / DRAWER ===================== */
+function openDrawer(){ $("drawer").classList.add("open"); $("overlay").classList.add("show"); }
+function closeDrawer(){ $("drawer").classList.remove("open"); $("overlay").classList.remove("show"); }
+$("ham").onclick=openDrawer; $("overlay").onclick=closeDrawer; $("drawerX").onclick=closeDrawer;
+function switchView(view){
+  $("viewChecker").classList.toggle("hidden",view!=="checker");
+  $("viewDocs").classList.toggle("hidden",view!=="docs");
+  document.querySelectorAll(".nav-item").forEach(b=>b.classList.toggle("active",b.dataset.view===view));
+  $("brandSub").textContent = view==="docs" ? "Downloadable Content" : "Compliance Checker";
+  window.scrollTo(0,0);
+}
+document.querySelectorAll(".nav-item").forEach(b=>b.onclick=()=>{ switchView(b.dataset.view); closeDrawer(); });
+
+/* ===================== APP STATE ===================== */
+let region="MY",scope="labelling",pendingSeq=1,docSeq=1;
+const log=[];
+const docs=[
+  {id:"d0",name:"Food Act 1983 (Act 281).pdf",ver:"consolidated · as at Jan 2024",by:"Site Admin",tag:"Primary Act"},
+  {id:"d1",name:"Food Regulations 1985 (P.U.(A) 437-85).pdf",ver:"consolidated · as at Jan 2024",by:"Site Admin",tag:"Regulations"},
+];
+const key=()=>region+"|"+scope, active=()=>RULESETS[key()];
+const isAdmin=()=>session&&session.role==="admin";
+
+/* ----- file drop (checker) ----- */
+const VIDEO=/\.(mp4|mov|avi|mkv|webm)$/i,IMG=/\.(png|jpe?g|webp|gif|tiff?)$/i,PDF=/\.pdf$/i;
+function armFile(name){
+  $("filechip").classList.add("show"); $("filechip").innerHTML='<span class="mono">'+name+'</span> received'; $("drop").classList.add("armed");
+  let lane=VIDEO.test(name)?'<b>Video lane:</b> frames OCR + audio → transcript':IMG.test(name)?'<b>Image lane:</b> OCR → text':PDF.test(name)?'<b>PDF lane:</b> parse + OCR → text':'<b>Text lane:</b> read directly';
+  $("pipe").classList.add("show"); $("pipe").innerHTML=lane+' → <b>engine runs on text</b>';
+  if(VIDEO.test(name)&&scope!=="advertising"){ $("scope").value="advertising"; scope="advertising"; syncRuleset(); }
+  if(!$("content").value.trim()) loadSample();
+}
+$("drop").onclick=()=>$("file").click();
+$("file").onchange=e=>{ if(e.target.files[0]) armFile(e.target.files[0].name); };
+["dragover","dragenter"].forEach(ev=>$("drop").addEventListener(ev,e=>{e.preventDefault();$("drop").classList.add("armed");}));
+$("drop").addEventListener("drop",e=>{e.preventDefault();const f=e.dataTransfer.files[0];if(f)armFile(f.name);});
+function loadSample(){ $("content").value=SAMPLES[scope]||SAMPLES.labelling; }
+$("sampleLink").onclick=()=>{ loadSample(); armFile(scope==="advertising"?"slimtea-ad.mp4":"cookies.pdf"); };
+$("region").onchange=e=>{region=e.target.value;syncRuleset();};
+$("scope").onchange=e=>{scope=e.target.value;$("extractLab").textContent=scope==="advertising"?"Transcript + on-screen text":"Extracted text";syncRuleset();};
+
+/* ----- ruleset render ----- */
+function syncRuleset(){
+  const rs=active(); const pub=rs.rules.filter(r=>r.status==="published");
+  $("liveCount").textContent=pub.length+" rules";
+  $("rsList").innerHTML=pub.map(r=>`<div class="rs-row"><span class="rs-sev ${r.sev}">${r.sev}</span><div class="rs-meta"><div class="t">${r.req}</div><div class="r mono">${r.ref} · ${rs.version}</div></div></div>`).join("")||'<div class="empty" style="padding:20px">No published rules.</div>';
+  renderPending();
+}
+function renderPending(){
+  const rs=active(); const pend=rs.rules.filter(r=>r.status==="pending");
+  if(!pend.length){ $("pendingCard").classList.add("hidden"); return; }
+  $("pendingCard").classList.remove("hidden"); $("pendCount").textContent=pend.length;
+  const admin=isAdmin();
+  $("pendList").innerHTML=pend.map(r=>`<div class="pq"><span class="act-tag">${r.action}</span><div class="pq-meta"><div class="t">${r.req}</div><div class="r mono">${r.ref} · ${r.sev}</div><div class="by">Proposed by <b>${r.proposedBy}</b></div>${admin?`<div class="pq-acts"><button class="approve" onclick="approve('${r.id}')">Approve & publish</button><button class="reject" onclick="reject('${r.id}')">Reject</button></div>`:`<div class="locked"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 018 0v4"/></svg> Waiting for an admin to review.</div>`}</div></div>`).join("");
+}
+function bump(rs){ const m=rs.version.match(/v(\d+)\.(\d+)/); rs.version="v"+m[1]+"."+(+m[2]+1); }
+function logEntry(kind,text,ver){ log.unshift({kind,text,ver,when:new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})}); renderLog(); }
+function renderLog(){ $("logList").innerHTML=log.length?log.map(e=>`<li><span class="tl-dot ${e.kind}"></span><div class="tl-body"><b>${e.text}</b> ${e.ver?`<span class="ver mono">${e.ver}</span>`:""}<div class="when">${e.when}</div></div></li>`).join(""):'<li style="border:0;color:var(--muted)">No changes yet.</li>'; }
+
+/* ----- approvals ----- */
+window.approve=function(id){ if(!isAdmin())return; const rs=active(); const r=rs.rules.find(x=>x.id===id); if(!r)return; r.status="published"; bump(rs); logEntry("pub",`Published “${r.req}” — approved by ${session.name}`,rs.version); syncRuleset(); };
+window.reject=function(id){ if(!isAdmin())return; const rs=active(); const i=rs.rules.findIndex(x=>x.id===id); if(i<0)return; const r=rs.rules[i]; rs.rules.splice(i,1); logEntry("rej",`Rejected “${r.req}” — by ${session.name}`,""); syncRuleset(); };
+
+/* ----- propose ----- */
+$("addToggle").onclick=()=>$("addForm").classList.toggle("show");
+$("f_cancel").onclick=()=>$("addForm").classList.remove("show");
+$("f_save").onclick=()=>{
+  const rs=active(); const req=$("f_req").value.trim(),ref=$("f_ref").value.trim()||"—",sev=$("f_sev").value,kws=$("f_kw").value.split(",").map(s=>s.trim()).filter(Boolean);
+  if(!req){$("f_req").focus();return;}
+  const esc=kws.map(k=>k.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")).join("|"); const rx=kws.length?new RegExp(esc,"i"):/$^/;
+  const test=sev==="prohibited"?(t=>!rx.test(t)):(t=>rx.test(t));
+  rs.rules.push(R({id:"x"+(pendingSeq++),req,ref,sev,test,status:"pending",proposedBy:session.name}));
+  logEntry("prop",`Proposed “${req}” — by ${session.name}`,"");
+  ["f_req","f_ref","f_kw"].forEach(i=>$(i).value=""); $("addForm").classList.remove("show"); syncRuleset();
+};
+
+/* ===================== DOCUMENTS + DOWNLOAD ===================== */
+$("docUp").onclick=()=>$("docFile").click();
+$("docFile").onchange=e=>{ if(!isAdmin())return; const f=e.target.files[0]; if(!f)return;
+  docs.unshift({id:"u"+(docSeq++),name:f.name,ver:"uploaded "+new Date().toLocaleDateString(),by:session.name,tag:"Uploaded",file:f});
+  logEntry("doc",`Uploaded “${f.name}” — by ${session.name}`,""); renderDocs(); };
+
+function renderDocs(){
+  $("dlGrid").innerHTML=docs.map(d=>`
+    <div class="dl-card">
+      <div class="row"><div class="dic">PDF</div>
+        <div class="meta"><div class="t">${d.name}</div><div class="m">${d.ver} · ${d.by}</div><span class="tag">${d.tag||"Document"}</span></div></div>
+      <button class="dl-btn" onclick="downloadDoc('${d.id}')"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0l-4-4m4 4l4-4"/><path d="M4 19h16"/></svg> Download</button>
+    </div>`).join("") || '<div class="empty">No documents yet.</div>';
+}
+
+/* genuine download: real uploaded File via object URL, or a generated sample PDF for seeds */
+function buildSamplePdf(title){
+  const objs=[
+    "<< /Type /Catalog /Pages 2 0 R >>",
+    "<< /Type /Pages /Kids [3 0 R] /Count 1 >>",
+    "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 5 0 R >> >> /Contents 4 0 R >>",
+    null, // contents filled below
+    "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>"
+  ];
+  const safe=title.replace(/[\\()]/g,"");
+  const text="BT /F1 16 Tf 54 720 Td ("+safe+") Tj 0 -30 Td /F1 11 Tf (Sample placeholder generated by the Conforma demo.) Tj 0 -18 Td (Replace with the real gazette/regulation PDF in production.) Tj ET";
+  objs[3]="<< /Length "+text.length+" >>\nstream\n"+text+"\nendstream";
+  let pdf="%PDF-1.4\n"; const off=[];
+  objs.forEach((o,i)=>{ off.push(pdf.length); pdf+=(i+1)+" 0 obj\n"+o+"\nendobj\n"; });
+  const xref=pdf.length;
+  pdf+="xref\n0 "+(objs.length+1)+"\n0000000000 65535 f \n";
+  off.forEach(o=>{ pdf+=String(o).padStart(10,"0")+" 00000 n \n"; });
+  pdf+="trailer\n<< /Size "+(objs.length+1)+" /Root 1 0 R >>\nstartxref\n"+xref+"\n%%EOF";
+  return new Blob([pdf],{type:"application/pdf"});
+}
+window.downloadDoc=function(id){
+  const d=docs.find(x=>x.id===id); if(!d)return;
+  const blob = d.file ? d.file : buildSamplePdf(d.name.replace(/\.pdf$/i,""));
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a"); a.href=url; a.download=d.name; document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),1500);
+};
+
+/* ----- engine ----- */
+$("run").onclick=()=>{
+  const rs=active(); const text=$("content").value||"";
+  const out=rs.rules.filter(r=>r.status==="published").map(r=>{ const ok=r.test(text); return {...r,status:ok?"p":(r.sev==="advisory"?"w":"f")}; });
+  renderResults(out,rs);
+};
+function renderResults(out,rs){
+  if(!out.length){ $("results").innerHTML='<div class="empty">No published rules to check.</div>'; return; }
+  const total=out.length,pass=out.filter(o=>o.status==="p").length,warn=out.filter(o=>o.status==="w").length,fail=out.filter(o=>o.status==="f").length;
+  const pct=Math.round(pass/total*100),C=2*Math.PI*26,off=C*(1-pass/total),ring=fail?"var(--fail)":warn?"var(--warn)":"var(--pass)";
+  const icon=s=>s==="p"?'<svg viewBox="0 0 24 24" stroke-linecap="round"><path d="M5 12l5 5L20 7"/></svg>':s==="w"?'<svg viewBox="0 0 24 24" stroke-linecap="round"><path d="M12 8v5M12 17h.01"/></svg>':'<svg viewBox="0 0 24 24" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>';
+  const det=o=>o.sev==="prohibited"?(o.status==="p"?"Prohibited content not found — ok":"Prohibited content detected"):(o.status==="p"?"Found in text":o.status==="f"?"Missing — mandatory":"Not detected — review");
+  $("results").innerHTML=`<div class="scoreline"><div class="ring"><svg width="64" height="64"><circle cx="32" cy="32" r="26" fill="none" stroke="var(--line)" stroke-width="6"/><circle cx="32" cy="32" r="26" fill="none" stroke="${ring}" stroke-width="6" stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${off}" transform="rotate(-90 32 32)"/></svg><div class="num">${pct}%</div></div><div class="tally"><div><span class="pill p"></span>${pass} pass</div><div><span class="pill w"></span>${warn} review</div><div><span class="pill f"></span>${fail} fail</div></div></div><ul class="ledger">${out.map(o=>`<li><div class="stat ${o.status}">${icon(o.status)}</div><div class="rule-txt"><div class="req">${o.req}</div><div class="det">${det(o)}</div><span class="ref mono"><b>${o.ref}</b> · ${rs.source.split("·")[0].trim()}</span></div></li>`).join("")}</ul>`;
+}
+</script>
+</body>
+</html>
