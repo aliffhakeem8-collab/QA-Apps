@@ -7,93 +7,90 @@
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600&family=IBM+Plex+Serif:wght@600&display=swap">
 	<style>
 		:root {
-			--paper: #FBFAF7;
+			--paper: #FAFAFA;
 			--panel: #FFFFFF;
-			--ink: #16201C;
-			--muted: #D0C9C2;
+			--ink: #1A1A1A;
+			--muted: #666666;
 
-			--line: #E7E5DD;
-			--line-strong: #D8D5CB;
+			--line: #EEEEEE;
+			--line-strong: #DDDDDD;
 
-			--teal: #0E6E5C;
-			--teal-deep: #0A584A;
-			--teal-soft: #E7F1ED;
+			--orange: #FF8C00;
+			--orange-deep: #E67E00;
+			--orange-soft: #FFF3E0;
 
-			--pass: #2E7D52;
-			--pass-soft: #E8F3EC;
+			--pass: #FF8C00;
+			--pass-soft: #FFF3E0;
 
-			--warn: #B9750F;
-			--warn-soft: #FBF0DE;
+			--warn: #F57C00;
+			--warn-soft: #FFE0B2;
 
-			--fail: #B23A2E;
-			--fail-soft: #FBE9E6;
+			--fail: #D32F2F;
+			--fail-soft: #FFEBEE;
 
-			--pend: #5B5BD6;
-			--pend-soft: #ECECFB;
+			--pend: #1976D2;
+			--pend-soft: #E3F2FD;
 
-			--shadow: 0 1px 2px rgba(22,32,28,.04), 0 8px 24px rgba(22,32,28,.06);
+			--shadow: 0 1px 2px rgba(26,26,26,.08), 0 8px 24px rgba(26,26,26,.12);
 			--radius: 14px;
 		}
 
 		@media (prefers-color-scheme: dark) {
 			:root:not([data-theme="light"]) {
-				--paper: #16201C;
-				--panel: #1E2622;
-				--ink: #F0EDE8;
-				--muted: #D0C9C2;
-				--slate-light: #E0D9D2;
+				--paper: #1A1A1A;
+				--panel: #242424;
+				--ink: #F5F5F5;
+				--muted: #B0B0B0;
 
-				--line: #3A3531;
-				--line-strong: #4A4540;
+				--line: #3A3A3A;
+				--line-strong: #4A4A4A;
 
-				--teal: #4ECFC4;
-				--teal-deep: #2DB8AD;
-				--teal-soft: rgba(78,207,196,.12);
+				--orange: #FFB74D;
+				--orange-deep: #FFA726;
+				--orange-soft: rgba(255, 152, 0, .15);
 
-				--pass: #7DD787;
-				--pass-soft: rgba(125,215,135,.12);
+				--pass: #FFB74D;
+				--pass-soft: rgba(255, 152, 0, .15);
 
-				--warn: #E6B847;
-				--warn-soft: rgba(230,184,71,.12);
+				--warn: #FFA726;
+				--warn-soft: rgba(255, 167, 38, .15);
 
-				--fail: #FF6B5B;
-				--fail-soft: rgba(255,107,91,.12);
+				--fail: #EF5350;
+				--fail-soft: rgba(244, 67, 54, .15);
 
-				--pend: #9B9BE8;
-				--pend-soft: rgba(155,155,232,.12);
+				--pend: #64B5F6;
+				--pend-soft: rgba(100, 181, 246, .15);
 
-				--shadow: 0 1px 2px rgba(0,0,0,.2), 0 8px 24px rgba(0,0,0,.3);
+				--shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.4);
 			}
 		}
 
 		:root[data-theme="dark"] {
-			--paper: #16201C;
-			--panel: #1E2622;
-			--ink: #F0EDE8;
-			--muted: #D0C9C2;
-			--slate-light: #E0D9D2;
+			--paper: #1A1A1A;
+			--panel: #242424;
+			--ink: #F5F5F5;
+			--muted: #B0B0B0;
 
-			--line: #3A3531;
-			--line-strong: #4A4540;
+			--line: #3A3A3A;
+			--line-strong: #4A4A4A;
 
-			--teal: #4ECFC4;
-			--teal-deep: #2DB8AD;
-			--teal-soft: rgba(78,207,196,.12);
+			--orange: #FFB74D;
+			--orange-deep: #FFA726;
+			--orange-soft: rgba(255, 152, 0, .15);
 
-			--pass: #7DD787;
-			--pass-soft: rgba(125,215,135,.12);
+			--pass: #FFB74D;
+			--pass-soft: rgba(255, 152, 0, .15);
 
-			--warn: #E6B847;
-			--warn-soft: rgba(230,184,71,.12);
+			--warn: #FFA726;
+			--warn-soft: rgba(255, 167, 38, .15);
 
-			--fail: #FF6B5B;
-			--fail-soft: rgba(255,107,91,.12);
+			--fail: #EF5350;
+			--fail-soft: rgba(244, 67, 54, .15);
 
-			--pend: #9B9BE8;
-			--pend-soft: rgba(155,155,232,.12);
+			--pend: #64B5F6;
+			--pend-soft: rgba(100, 181, 246, .15);
 
-			--shadow: 0 1px 2px rgba(0,0,0,.2), 0 8px 24px rgba(0,0,0,.3);
-			--slate-light: #E0D9D2;
+			--shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.4);
 		}
 
 		* {
@@ -148,13 +145,13 @@
 		.logo-mark {
 			width: 32px;
 			height: 32px;
-			border: 2.5px solid var(--teal);
+			border: 2.5px solid var(--orange);
 			border-radius: 4px;
 			display: flex;
 			align-items: center;
 			justify-content: center;
 			font-weight: 600;
-			color: var(--teal);
+			color: var(--orange);
 			font-size: 18px;
 		}
 
@@ -172,11 +169,11 @@
 		}
 
 		nav a:hover {
-			color: var(--teal);
+			color: var(--orange);
 		}
 
 		.cta-header {
-			background: var(--teal);
+			background: var(--orange);
 			color: white;
 			padding: 10px 22px;
 			border-radius: 11px;
@@ -189,7 +186,7 @@
 		}
 
 		.cta-header:hover {
-			background: var(--teal-deep);
+			background: var(--orange-deep);
 		}
 
 		/* Hero */
@@ -224,12 +221,12 @@
 
 		.hero-cta {
 			display: inline-block;
-			color: var(--teal);
+			color: var(--orange);
 			padding: 12px 0;
 			text-decoration: none;
 			font-weight: 600;
 			font-size: 15px;
-			border-bottom: 2px solid var(--teal);
+			border-bottom: 2px solid var(--orange);
 			transition: opacity 0.2s;
 		}
 
@@ -371,7 +368,7 @@
 			font-weight: 600;
 			letter-spacing: 0.06em;
 			text-transform: uppercase;
-			color: var(--teal);
+			color: var(--orange);
 			margin-bottom: 14px;
 		}
 
@@ -397,7 +394,7 @@
 			font-weight: 600;
 			letter-spacing: 0.06em;
 			text-transform: uppercase;
-			color: var(--teal);
+			color: var(--orange);
 			margin-bottom: 12px;
 		}
 
@@ -458,7 +455,7 @@
 		}
 
 		.feature-card:hover {
-			border-color: var(--teal);
+			border-color: var(--orange);
 			box-shadow: var(--shadow);
 		}
 
@@ -467,7 +464,7 @@
 			font-weight: 600;
 			letter-spacing: 0.06em;
 			text-transform: uppercase;
-			color: var(--teal);
+			color: var(--orange);
 			margin-bottom: 12px;
 		}
 
@@ -594,7 +591,7 @@
 		}
 
 		.cta-button {
-			background: var(--teal);
+			background: var(--orange);
 			color: white;
 			padding: 16px 44px;
 			border-radius: 11px;
@@ -603,13 +600,13 @@
 			font-size: 16px;
 			display: inline-block;
 			transition: all 0.2s;
-			border: 2px solid var(--teal);
+			border: 2px solid var(--orange);
 			cursor: pointer;
 		}
 
 		.cta-button:hover {
 			background: transparent;
-			color: var(--teal);
+			color: var(--orange);
 		}
 
 		/* Footer */
@@ -641,12 +638,12 @@
 		.footer-brand-icon {
 			width: 28px;
 			height: 28px;
-			border: 2px solid var(--teal);
+			border: 2px solid var(--orange);
 			border-radius: 3px;
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			color: var(--teal);
+			color: var(--orange);
 			font-size: 16px;
 		}
 
@@ -678,7 +675,7 @@
 
 		.footer-newsletter button {
 			padding: 10px 20px;
-			background: var(--teal);
+			background: var(--orange);
 			color: white;
 			border: none;
 			border-radius: 6px;
@@ -689,7 +686,7 @@
 		}
 
 		.footer-newsletter button:hover {
-			background: var(--teal-deep);
+			background: var(--orange-deep);
 		}
 
 		.footer-social {
