@@ -628,26 +628,52 @@
 		<div class="container">
 			<div id="demo-content">
 				<div>
-					<h2>See It In Action</h2>
-					<p>Conforma works like having a food safety expert on your team 24/7. Ask questions, run checks, get insights instantly.</p>
+					<h2>Live Compliance Checking</h2>
+					<p>Drop a product label or advertisement. Conforma instantly checks it against Malaysian food regulations, scores compliance, and flags issues.</p>
 				</div>
 				<div class="demo-panel">
 					<div class="demo-header">
 						<div style="width: 8px; height: 8px; background: var(--orange); border-radius: 50%;"></div>
-						<span class="demo-header-text">Compliance Check</span>
+						<span class="demo-header-text">Compliance Checker — MY · Labelling</span>
 					</div>
-					<div class="demo-messages">
-						<div class="demo-message demo-user">Check storage temperature logs for Q3</div>
-						<div class="demo-message demo-system">
-							Analyzing Q3 storage data...
-							<span class="demo-status status-pass">✓ Pass</span>
-							<span class="demo-status status-pending">2 Pending</span>
+					<div style="padding: 20px; border-bottom: 1px solid var(--border); font-size: 13px;">
+						<div style="color: var(--fg-muted); margin-bottom: 8px;">File: mekar-cookies-label.pdf</div>
+						<div style="margin: 12px 0; padding: 12px; background: var(--bg-alt); border-radius: 6px; font-size: 12px; color: var(--fg-muted); line-height: 1.5; font-family: monospace;">
+							MEKAR Coconut Cookies<br>
+							Net weight: 200 g<br>
+							Ingredients: wheat flour, sugar, coconut (18%), palm oil<br>
+							Manufactured by: Mekar Foods Sdn Bhd, Shah Alam<br>
+							Best before: see base
 						</div>
-						<div class="demo-message demo-user">Show me the pending items</div>
-						<div class="demo-message demo-system">
-							Found in week 2 (Jul 8–14):
-							- Cold room temp spike 15:23
-							- Humidity out of range
+					</div>
+					<div style="padding: 20px;">
+						<div style="display: flex; align-items: center; gap: 16px; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--border);">
+							<div style="font-size: 32px; font-weight: 700; color: var(--orange);">92%</div>
+							<div style="font-size: 13px;">
+								<div style="display: flex; gap: 16px;">
+									<div><span style="display: inline-block; width: 8px; height: 8px; background: #2E7D52; border-radius: 2px; margin-right: 6px;"></span>8 pass</div>
+									<div><span style="display: inline-block; width: 8px; height: 8px; background: #B9750F; border-radius: 2px; margin-right: 6px;"></span>1 review</div>
+									<div><span style="display: inline-block; width: 8px; height: 8px; background: #B23A2E; border-radius: 2px; margin-right: 6px;"></span>0 fail</div>
+								</div>
+							</div>
+						</div>
+						<div style="font-size: 13px; color: var(--fg-muted);">
+							<div style="padding: 8px 0; border-bottom: 1px solid var(--border); display: flex; gap: 8px;">
+								<span style="color: #2E7D52; font-weight: 600;">✓</span>
+								<div><span style="color: var(--fg); font-weight: 500;">Product name declared</span><br><span style="font-size: 12px;">Found in text</span></div>
+							</div>
+							<div style="padding: 8px 0; border-bottom: 1px solid var(--border); display: flex; gap: 8px;">
+								<span style="color: #2E7D52; font-weight: 600;">✓</span>
+								<div><span style="color: var(--fg); font-weight: 500;">Country of origin stated</span><br><span style="font-size: 12px;">Found in text</span></div>
+							</div>
+							<div style="padding: 8px 0; border-bottom: 1px solid var(--border); display: flex; gap: 8px;">
+								<span style="color: #B9750F; font-weight: 600;">!</span>
+								<div><span style="color: var(--fg); font-weight: 500;">Bahasa Malaysia particulars</span><br><span style="font-size: 12px;">Recommended but not found</span></div>
+							</div>
+							<div style="padding: 8px 0; display: flex; gap: 8px;">
+								<span style="color: #2E7D52; font-weight: 600;">✓</span>
+								<div><span style="color: var(--fg); font-weight: 500;">Net weight in metric units</span><br><span style="font-size: 12px;">Found: 200 g</span></div>
+							</div>
 						</div>
 					</div>
 				</div>
