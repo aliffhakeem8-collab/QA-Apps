@@ -59,7 +59,39 @@
 		.container {
 			max-width: 1200px;
 			margin: 0 auto;
-			padding: 0 40px;
+			padding: 0 60px;
+		}
+
+		/* Scroll animations */
+		.fade-in {
+			opacity: 0;
+			animation: fadeIn 0.6s ease-out forwards;
+		}
+
+		.slide-up {
+			opacity: 0;
+			transform: translateY(20px);
+			animation: slideUp 0.7s ease-out forwards;
+		}
+
+		@keyframes fadeIn {
+			from {
+				opacity: 0;
+			}
+			to {
+				opacity: 1;
+			}
+		}
+
+		@keyframes slideUp {
+			from {
+				opacity: 0;
+				transform: translateY(20px);
+			}
+			to {
+				opacity: 1;
+				transform: translateY(0);
+			}
 		}
 
 		/* Header */
@@ -130,10 +162,10 @@
 
 		/* Hero */
 		.hero {
-			padding: 100px 0;
+			padding: 120px 0;
 			display: grid;
 			grid-template-columns: 1fr 1fr;
-			gap: 80px;
+			gap: 100px;
 			align-items: center;
 		}
 
@@ -142,7 +174,7 @@
 			font-size: 56px;
 			font-weight: 600;
 			line-height: 1.2;
-			margin-bottom: 24px;
+			margin-bottom: 28px;
 			color: var(--fg);
 		}
 
@@ -150,7 +182,7 @@
 			font-size: 18px;
 			color: var(--fg-muted);
 			line-height: 1.7;
-			margin-bottom: 32px;
+			margin-bottom: 36px;
 		}
 
 		.hero-cta {
@@ -174,7 +206,7 @@
 
 		/* Section */
 		section {
-			padding: 80px 0;
+			padding: 100px 0;
 		}
 
 		section h2 {
@@ -196,20 +228,20 @@
 		#about {
 			display: grid;
 			grid-template-columns: 1fr 1fr;
-			gap: 80px;
+			gap: 100px;
 			align-items: center;
 		}
 
 		#about-content {
 			display: flex;
 			flex-direction: column;
-			gap: 24px;
+			gap: 32px;
 		}
 
 		#about-content h3 {
 			font-size: 20px;
 			font-weight: 600;
-			margin-top: 32px;
+			margin-top: 8px;
 			color: var(--fg);
 		}
 
@@ -233,14 +265,14 @@
 		/* Regulations */
 		#regulations {
 			background: var(--bg-alt);
-			margin: 0 -40px;
-			padding: 80px 40px;
+			margin: 0 -60px;
+			padding: 100px 60px;
 		}
 
 		#regulations-content {
 			display: grid;
 			grid-template-columns: repeat(3, 1fr);
-			gap: 60px;
+			gap: 80px;
 			margin-top: 60px;
 		}
 
@@ -266,7 +298,7 @@
 		#features-grid {
 			display: grid;
 			grid-template-columns: repeat(2, 1fr);
-			gap: 48px;
+			gap: 60px;
 			margin-top: 60px;
 		}
 
@@ -290,15 +322,19 @@
 		/* Demo */
 		#demo {
 			background: var(--bg-alt);
-			margin: 0 -40px;
-			padding: 80px 40px;
+			margin: 0 -60px;
+			padding: 100px 60px;
 		}
 
 		#demo-content {
 			display: grid;
 			grid-template-columns: 1fr 1fr;
-			gap: 80px;
+			gap: 100px;
 			align-items: center;
+		}
+
+		#demo > .container {
+			padding: 0;
 		}
 
 		.demo-panel {
@@ -385,7 +421,7 @@
 		/* CTA */
 		#cta {
 			text-align: center;
-			padding: 100px 0;
+			padding: 120px 0;
 		}
 
 		#cta h2 {
@@ -402,7 +438,7 @@
 		/* Footer */
 		footer {
 			border-top: 1px solid var(--border);
-			padding: 60px 0 40px;
+			padding: 80px 0 40px;
 			color: var(--fg-muted);
 			font-size: 14px;
 		}
@@ -410,7 +446,7 @@
 		.footer-content {
 			display: grid;
 			grid-template-columns: repeat(4, 1fr);
-			gap: 40px;
+			gap: 60px;
 			margin-bottom: 60px;
 		}
 
@@ -449,12 +485,22 @@
 		/* Responsive */
 		@media (max-width: 920px) {
 			.container {
-				padding: 0 32px;
+				padding: 0 40px;
+			}
+
+			#regulations {
+				margin: 0 -40px;
+				padding: 80px 40px;
+			}
+
+			#demo {
+				margin: 0 -40px;
+				padding: 80px 40px;
 			}
 
 			.hero, #about, #demo-content {
 				grid-template-columns: 1fr;
-				gap: 48px;
+				gap: 60px;
 			}
 
 			#regulations-content, #features-grid {
@@ -472,11 +518,29 @@
 			section h2 {
 				font-size: 32px;
 			}
+
+			.hero {
+				padding: 80px 0;
+			}
+
+			section {
+				padding: 80px 0;
+			}
 		}
 
 		@media (max-width: 600px) {
 			.container {
 				padding: 0 20px;
+			}
+
+			#regulations {
+				margin: 0 -20px;
+				padding: 60px 20px;
+			}
+
+			#demo {
+				margin: 0 -20px;
+				padding: 60px 20px;
 			}
 
 			header {
@@ -490,6 +554,7 @@
 
 			.hero {
 				padding: 60px 0;
+				gap: 40px;
 			}
 
 			.hero-content h1 {
@@ -514,6 +579,14 @@
 				gap: 24px;
 				text-align: center;
 			}
+
+			#features-grid {
+				gap: 40px;
+			}
+
+			#about, #demo-content {
+				gap: 48px;
+			}
 		}
 	</style>
 </head>
@@ -533,7 +606,7 @@
 			</nav>
 		</header>
 
-		<section class="hero">
+		<section class="hero fade-in">
 			<div class="hero-content">
 				<h1>Food Safety Compliance, Automated</h1>
 				<p>Sekawan brings AI to your QA workflow. Automate HACCP, GMP, and halal compliance checking for Malaysian food manufacturers. No more manual audits. No more missed details.</p>
@@ -542,7 +615,7 @@
 					<a href="#" style="color: var(--fg-muted); text-decoration: none; font-size: 14px;">Learn more →</a>
 				</div>
 			</div>
-			<div class="hero-visual">
+			<div class="hero-visual slide-up">
 				AI-Powered Compliance Checking<br>Real-Time Audit Trails
 			</div>
 		</section>
@@ -550,7 +623,7 @@
 
 	<section id="about">
 		<div class="container" style="display: contents;">
-			<div id="about-content">
+			<div id="about-content" class="slide-up">
 				<div>
 					<h2>Built by Sekawan</h2>
 					<p>We're a team of food safety engineers and software developers. We know the pain of repetitive compliance checks—we lived it.</p>
@@ -564,7 +637,7 @@
 					<p>A future where food manufacturers can focus on innovation and growth, not endless compliance documentation.</p>
 				</div>
 			</div>
-			<div id="about-visual">
+			<div id="about-visual" class="slide-up">
 				Conforma Dashboard<br>Food Safety Made Simple
 			</div>
 		</div>
@@ -572,18 +645,18 @@
 
 	<section id="regulations">
 		<div class="container">
-			<h2>Regulations We Cover</h2>
-			<p>Full compliance across Malaysia's food safety framework.</p>
+			<h2 class="fade-in">Regulations We Cover</h2>
+			<p class="fade-in">Full compliance across Malaysia's food safety framework.</p>
 			<div id="regulations-content">
-				<div class="regulation-item">
+				<div class="regulation-item slide-up">
 					<h3>HACCP</h3>
 					<p>Hazard Analysis and Critical Control Points. The foundation of food safety planning and monitoring.</p>
 				</div>
-				<div class="regulation-item">
+				<div class="regulation-item slide-up" style="animation-delay: 0.1s;">
 					<h3>GMP</h3>
 					<p>Good Manufacturing Practices. Ensure consistent quality and safety across all production processes.</p>
 				</div>
-				<div class="regulation-item">
+				<div class="regulation-item slide-up" style="animation-delay: 0.2s;">
 					<h3>Food Act & Halal</h3>
 					<p>Malaysian Food Act compliance and halal certification requirements for Muslim-majority markets.</p>
 				</div>
@@ -593,30 +666,30 @@
 
 	<section id="features">
 		<div class="container">
-			<h2>Why Conforma</h2>
-			<p>Purpose-built for food QA teams that need precision and speed.</p>
+			<h2 class="fade-in">Why Conforma</h2>
+			<p class="fade-in">Purpose-built for food QA teams that need precision and speed.</p>
 			<div id="features-grid">
-				<div class="feature-item">
+				<div class="feature-item slide-up">
 					<h3>Real-Time Audit Trails</h3>
 					<p>Every compliance check is logged and timestamped. Full traceability for regulatory inspections.</p>
 				</div>
-				<div class="feature-item">
+				<div class="feature-item slide-up" style="animation-delay: 0.1s;">
 					<h3>Automated HACCP</h3>
 					<p>Let Conforma run through your HACCP checklist. Flag issues before they become problems.</p>
 				</div>
-				<div class="feature-item">
+				<div class="feature-item slide-up" style="animation-delay: 0.2s;">
 					<h3>Halal & Compliance</h3>
 					<p>Built-in checks for halal certification and Malaysian food regulation requirements.</p>
 				</div>
-				<div class="feature-item">
+				<div class="feature-item slide-up" style="animation-delay: 0.3s;">
 					<h3>Zero Setup Time</h3>
 					<p>Pre-configured checklists for your industry. Start checking on day one.</p>
 				</div>
-				<div class="feature-item">
+				<div class="feature-item slide-up" style="animation-delay: 0.4s;">
 					<h3>Team Collaboration</h3>
 					<p>Assign tasks, share findings, keep everyone in sync on compliance status.</p>
 				</div>
-				<div class="feature-item">
+				<div class="feature-item slide-up" style="animation-delay: 0.5s;">
 					<h3>Export & Report</h3>
 					<p>Generate audit reports instantly. Share with regulators and leadership in seconds.</p>
 				</div>
@@ -625,13 +698,13 @@
 	</section>
 
 	<section id="demo">
-		<div class="container">
+		<div class="container" style="display: contents;">
 			<div id="demo-content">
-				<div>
+				<div class="slide-up">
 					<h2>Live Compliance Checking</h2>
 					<p>Drop a product label or advertisement. Conforma instantly checks it against Malaysian food regulations, scores compliance, and flags issues.</p>
 				</div>
-				<div class="demo-panel">
+				<div class="demo-panel slide-up">
 					<div class="demo-header">
 						<div style="width: 8px; height: 8px; background: var(--orange); border-radius: 50%;"></div>
 						<span class="demo-header-text">Compliance Checker — MY · Labelling</span>
@@ -682,7 +755,7 @@
 	</section>
 
 	<section id="cta">
-		<div class="container">
+		<div class="container fade-in">
 			<h2>Ready to simplify compliance?</h2>
 			<p>Join food manufacturers who've cut audit time in half.</p>
 			<button class="btn-primary">Get Started Free</button>
@@ -691,7 +764,7 @@
 
 	<footer>
 		<div class="container">
-			<div class="footer-content">
+			<div class="footer-content fade-in">
 				<div class="footer-section">
 					<h4>Product</h4>
 					<a href="#">Features</a>
@@ -727,5 +800,24 @@
 			</div>
 		</div>
 	</footer>
+
+	<script>
+		// Scroll animation observer
+		const observer = new IntersectionObserver((entries) => {
+			entries.forEach(entry => {
+				if (entry.isIntersecting) {
+					entry.target.style.animationPlayState = 'running';
+				}
+			});
+		}, {
+			threshold: 0.1
+		});
+
+		// Observe all animated elements
+		document.querySelectorAll('.fade-in, .slide-up').forEach(el => {
+			el.style.animationPlayState = 'paused';
+			observer.observe(el);
+		});
+	</script>
 </body>
 </html>
