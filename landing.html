@@ -337,6 +337,14 @@
 			padding: 0;
 		}
 
+		#about > .container,
+		#demo > .container {
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+			gap: 100px;
+			align-items: center;
+		}
+
 		.demo-panel {
 			background: var(--bg);
 			border: 1px solid var(--border);
@@ -498,7 +506,7 @@
 				padding: 80px 80px;
 			}
 
-			.hero, #about, #demo-content {
+			.hero, #about > .container, #demo > .container {
 				grid-template-columns: 1fr;
 				gap: 60px;
 			}
@@ -622,7 +630,7 @@
 	</div>
 
 	<section id="about">
-		<div class="container" style="display: grid; grid-template-columns: 1fr 1fr; gap: 100px; align-items: center;">
+		<div class="container">
 			<div id="about-content" class="slide-up">
 				<div>
 					<h2>Built by Sekawan</h2>
@@ -698,7 +706,7 @@
 	</section>
 
 	<section id="demo">
-		<div class="container" style="display: grid; grid-template-columns: 1fr 1fr; gap: 100px; align-items: center;">
+		<div class="container">
 			<div id="demo-content">
 				<div class="slide-up">
 					<h2>Live Compliance Checking</h2>
